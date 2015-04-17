@@ -40,7 +40,7 @@ package tictactoe;
 // ------------
 // | - | - | X
 
-public class TicTacToe {
+public class TicTacToe /* needs to extend a console program*/{
 
     final private char[][] board;
     private char userMarker;
@@ -120,7 +120,7 @@ public class TicTacToe {
         
     }
 
-    public boolean isGameOver() {
+    public boolean isThereAWinner() {
         // winning conditions
         // create bools for all
         boolean topRow = board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][1] != '-';
@@ -136,11 +136,46 @@ public class TicTacToe {
         return checkConditions;
       
     }
+    
+    public boolean isTheBoardFilled() {
+        for (int i = 0; i < board[0].length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                if (board[i][j] == '-') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+   public String isGameOver() {
+        if (isTheBoardFilled()) {
+            return "Draw: Game Over";
+        } else if (isThereAWinner()) {
+            return "We have a winner!";
+        } else {
+            return "notOver";
+        }
+    }
 
     public static void main(String[] args) {
         // The game runs here....
         TicTacToe newGame = new TicTacToe('X', 'O');
-        newGame.printBoard();
+        
+        while (newGame.isGameOver().equals("notOver")) {
+            // We want to cycle through the turns of user and AI
+            newGame.printBoard();
+            // User have input
+            // User play turn --> ask for new input if failed
+            // print board
+            // check for winning condition
+            // AI Monte Carlo Simulation
+            // AI have input
+            // AI play turn
+            // print board
+        }
+        // print who won
+        
     }
 
 }
