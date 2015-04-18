@@ -134,12 +134,7 @@ class MonteCarloAI {
         return rowCol;
     }
 
-    // KEY TO THE SIMULATIONS:
-    // What will this do?
-    // This will run many simulations of the game
-    // It will call:
-    // --chooseRandomSpot
-    // Will need to keep track of -> number of simulations
+    // KEY TO THE SIMULATIONS/AI:
     public int runRandomSimulations(TicTacToe game) {
         int[] winPoints = new int[9];
         int[] goodSpots = new int[9];
@@ -162,29 +157,36 @@ class MonteCarloAI {
             }
         }
 
-        // JUST IN CASE:
+        // JUST IN CASE
         if (!isThereAFreeSpace) {
-            return -1; // game over
+            throw new RuntimeException("There aren't any free spaces!");
         }
 
         //play it out yoo
         for (int j = 0; j < this.numberOfSimulations; j++) {
+            // set to -1 so we can track what the first move is
             firstMove = -1;
             // Play a game...
             while (tempGame.gameOver().equals("notOver")) {
+                // The computer is basically playing the user and the comp
+                // But we just take one side.
                 int spot = this.chooseRandomSpot(tempGame);
                 if (spot == -1 /* meaning there was no spot avaliable */) {
                     winner = this.NONE;
+                    // we are done with this game. 
                     break;
                 }
+                // play the randomly choosen position
                 int[] position = this.conversionToRowColSpot(spot);
                 tempGame.playTurn(position[0], position[1]);
+                // take note if it's the first position
                 if (firstMove == -1) {
                     firstMove = spot;
                 }
             }
 
             // Who won with this first move?
+            // Dealing points appropriately
             if (tempGame.winner != this.NONE) {
                 if (tempGame.winner == this.USER) {
                     winPoints[firstMove] += this.WIN_PTS;
@@ -199,19 +201,22 @@ class MonteCarloAI {
         // After running through all of stimulations...
 
             int max = this.MIN_PTS;
-            // Finding the max points
+            // Finding spot with max points = Where AI should go
             for (int k = 0; k < this.sizeOfBoard; k++) {
                 if (max < winPoints[k]) {
                     max = winPoints[k];
                 }
             }
 
-            // creating choices for candidates
+            // Could have multiple good candidates
+            // Creating choices for candidates
             for (int b = 0; b < this.sizeOfBoard; b++) {
                 if (winPoints[b] == max) {
                     goodSpots[goodSpotIndex++] = b;
                 }
             }
+            
+            // Randomly choose a good one
             return goodSpots[rand() % goodSpotIndex];
 
         
