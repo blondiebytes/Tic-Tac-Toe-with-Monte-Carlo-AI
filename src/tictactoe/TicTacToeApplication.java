@@ -63,10 +63,17 @@ public class TicTacToeApplication extends ConsoleProgram {
                 return;
             }
             println("It's my turn!");
-            // AI Monte Carlo Simulation
+            
+            // AI Monte Carlo Simulation that gives back array of row and col
             // AI have input
+            
+            int[] rowCol = //some method that returns the simulation
+                    
             // AI play turn
-            // print board
+            newGame.playTurn(rowCol[0], rowCol[1]);
+            
+            newGame.printBoard();
+            println("I picked " + rowCol[0] + " : " + rowCol[1]);
         }
         println(newGame.gameOver());
 
