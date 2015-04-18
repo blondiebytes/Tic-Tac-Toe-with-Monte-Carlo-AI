@@ -167,6 +167,7 @@ class MonteCarloAI {
         for (int j = 0; j < this.numberOfSimulations; j++) {
             // set to -1 so we can track what the first move is
             firstMove = -1;
+            System.out.println(tempGame.gameOver());
             // Play a game...
             while (tempGame.gameOver().equals("notOver")) {
                 // The computer is basically playing the user and the comp
