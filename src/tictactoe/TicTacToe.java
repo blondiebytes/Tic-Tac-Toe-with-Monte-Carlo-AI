@@ -46,7 +46,7 @@ import acm.program.ConsoleProgram;
 
 public class TicTacToe extends ConsoleProgram {
 
-    final private char[][] board;
+    protected final char[][] board;
     private char userMarker;
     private char aiMarker;
     private char currentMarker;

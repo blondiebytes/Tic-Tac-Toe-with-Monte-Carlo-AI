@@ -12,10 +12,12 @@ import acm.program.ConsoleProgram;
  * @author kathrynhodge
  */
 public class TicTacToeApplication extends ConsoleProgram {
-
+ 
+    private TicTacToe newGame = new TicTacToe(getConsole(), 'X', 'O');
+    private MonteCarloAI ai = new MonteCarloAI();
+    
     public void run() {
         // The game runs here....
-        TicTacToe newGame = new TicTacToe(getConsole(), 'X', 'O');
         println("Welcome to Tic Tac Toe! You are about to go against"
                 + " the master of Tic Tac Toe. Are you ready? I hope"
                 + " so! To play, enter a row number and column number,"
@@ -65,9 +67,9 @@ public class TicTacToeApplication extends ConsoleProgram {
             println("It's my turn!");
             
             // AI Monte Carlo Simulation that gives back array of row and col
-            // AI have input
             
-            int[] rowCol = //some method that returns the simulation
+            // AI picks where it want to go
+            int[] rowCol = ai.pickSpot(newGame);
                     
             // AI play turn
             newGame.playTurn(rowCol[0], rowCol[1]);
