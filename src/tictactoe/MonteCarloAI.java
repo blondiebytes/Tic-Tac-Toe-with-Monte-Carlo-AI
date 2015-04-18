@@ -18,7 +18,7 @@ class MonteCarloAI {
     private int lengthOfCol = 3;
     private Random rand = new Random();
 
-    private int numberOfSimulations = 2500;
+    private int numberOfSimulations = 25;
     //^ the lower == computer more dumb
     private char NONE = '-';
     private char USER = 'X';
@@ -26,9 +26,10 @@ class MonteCarloAI {
 
     // Because we want the winners to stand out from the losers
     private int WIN_PTS = 10;
-    private int LOSE_PTS = 1;
+    private int LOSE_PTS = -1;
     private int DRAW_PTS = 0;
     private int MIN_PTS = -1000000000;
+    private int NO_SPOT = -100;
 
     public MonteCarloAI() {
 
@@ -70,14 +71,14 @@ class MonteCarloAI {
             }
         }
         if (index == 0) {
-            return -1; // no spot avaliable
+            return this.NO_SPOT; // no spot avaliable
         }
 
         return spotAvaliable[rand() % index];
     }
 
     public int rand() {
-        return rand.nextInt();
+        return Math.abs(rand.nextInt());
     }
 
     public int conversionToNumericalSpot(int i, int j) {
@@ -171,7 +172,7 @@ class MonteCarloAI {
                 // The computer is basically playing the user and the comp
                 // But we just take one side.
                 int spot = this.chooseRandomSpot(tempGame);
-                if (spot == -1 /* meaning there was no spot avaliable */) {
+                if (spot == this.NO_SPOT /* meaning there was no spot avaliable */) {
                     winner = this.NONE;
                     // we are done with this game. 
                     break;
@@ -182,6 +183,7 @@ class MonteCarloAI {
                 // take note if it's the first position
                 if (firstMove == -1) {
                     firstMove = spot;
+                    System.out.println("Firstmove - turn" + firstMove);
                 }
             }
 
@@ -189,13 +191,25 @@ class MonteCarloAI {
             // Dealing points appropriately
             if (tempGame.winner != this.NONE) {
                 if (tempGame.winner == this.USER) {
+                    System.out.println("endRound FM = " + firstMove);
+                    System.out.println("TotalPts FM = " + winPoints[firstMove]);
                     winPoints[firstMove] += this.WIN_PTS;
+                    System.out.println("DRAW: AFTER FM = " + winPoints[firstMove]);
                 } else {
+                    System.out.println("LOSE: endRound FM = " + firstMove);
+                    System.out.println("LOSE: TotalPts FM = " + winPoints[firstMove]);
                     winPoints[firstMove] += this.LOSE_PTS;
+                    System.out.println("LOSE: AFTER FM = " + winPoints[firstMove]);
                 }
             } else {
+                System.out.println("DRAW: endRound FM = " + firstMove);
+                System.out.println("DRAW: TotalPts FM = " + winPoints[firstMove]);
                 winPoints[firstMove] += this.DRAW_PTS;
+                System.out.println("DRAW: AFTER FM = " + winPoints[firstMove]);
             }
+            
+            // Reseting the game for the next simulation
+            tempGame = game;
         }
         
         // After running through all of stimulations...
