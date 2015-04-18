@@ -1,6 +1,10 @@
 package tictactoe;
 // What do we need to make Tic Tac Toe:
 // Game Logic --> How do we win; how do we lose
+
+import acm.io.IOConsole;
+import acm.program.ConsoleProgram;
+
 // VIA gameOver method that checks things
 
     // Controls --> How do we play? How do we enter X's and O's
@@ -40,15 +44,17 @@ package tictactoe;
 // ------------
 // | - | - | X
 
-public class TicTacToe /* needs to extend a console program*/{
+public class TicTacToe extends ConsoleProgram {
 
     final private char[][] board;
     private char userMarker;
     private char aiMarker;
     private char currentMarker;
+    private IOConsole console;
+    private char winner;
 
 
-    public TicTacToe(char userMarker, char aiMarker) {
+    public TicTacToe(IOConsole console, char userMarker, char aiMarker) {
         board = new char[3][3];
         // board[0].length for length of row
         // board.length for length of col
@@ -60,7 +66,8 @@ public class TicTacToe /* needs to extend a console program*/{
         this.userMarker = userMarker;
         this.aiMarker = aiMarker;
         this.currentMarker = userMarker;
-        printBoard();
+        this.console = console;
+        this.winner = '-';
     }
     
     // TRUE = user
@@ -70,22 +77,21 @@ public class TicTacToe /* needs to extend a console program*/{
         return currentMarker == userMarker;
     }
 
-    public String playTurn(int row, int col) {
-        // check if spot is in range
+    public void playTurn(int row, int col) {
         if (row >= 0 && row < board.length && col >= 0 && col < board.length) {
-            // check if spot isn't taken
-            if (this.isSpotNotTaken(row, col)) {
                 this.changeMarker();
                 board[row][col] = currentMarker;
-                return "played turn";
-            }
         }
-        return "invalid input";
+    }
+    
+    // check if spot is in range
+    public boolean withinRange(int number) {
+        return number >= 0 && number < board.length;
     }
    
-    
-    public boolean isSpotNotTaken(int row, int col) {
-        return board[row][col] == '-';
+    // check if spot isn't taken
+    public boolean isSpotTaken(int row, int col) {
+       return board[row][col] != '-';
     }
 
     public void changeMarker() {
@@ -112,30 +118,65 @@ public class TicTacToe /* needs to extend a console program*/{
                 rows[i] = rows[i] + " | " + board[j][i];
             }
         }
+        console.println();
         for (String s : rows) {
-            System.out.println(s);
-            System.out.println("--------------");
+            console.println(s);
+            console.println("--------------");
         }
-        System.out.println();
+        console.println();
         
     }
 
     public boolean isThereAWinner() {
         // winning conditions
-        // create bools for all
-        boolean topRow = board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][1] != '-';
-        boolean middleRow = board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][1] != '-';
-        boolean bottomRow = board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][1] != '-';
-        boolean firstCol = board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[1][0] != '-';
-        boolean secondCol = board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[1][1] != '-';
-        boolean thirdCol = board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[1][2] != '-';
-        boolean rightDi = board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] != '-';
-        boolean leftDi = board[0][2] == board[1][1] && board [1][1] == board[2][0] && board[1][1] != '-';
-        boolean checkConditions = topRow || middleRow || bottomRow || firstCol || secondCol || thirdCol || rightDi || leftDi;
-        // ALSO NEED TO CHECK IF what we match is actually a winner -> not just '-'
-        return checkConditions;
+        boolean diagonalsAndMiddles = rightDi() || leftDi() || middleRow() || secondCol();
+        boolean topAndFirst = topRow() || firstCol();
+        boolean bottomAndThird = bottomRow() || thirdCol();
+        if (diagonalsAndMiddles) {
+            this.winner = board[1][1];
+        } else if (topAndFirst){
+            this.winner = board[0][0];
+        } else if (bottomAndThird) {
+            this.winner = board[2][2];
+        }
+        
+        return diagonalsAndMiddles || topAndFirst || bottomAndThird;
       
     }
+    
+    public boolean topRow() {
+        return board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][1] != '-';
+    }
+    
+    public boolean middleRow() {
+        return board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][1] != '-';
+    }
+    
+    public boolean bottomRow() {
+        return board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][1] != '-';
+    }
+    
+    public boolean firstCol() {
+        return board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[1][0] != '-';
+    }
+    
+    public boolean secondCol() {
+        return board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[1][1] != '-';
+    }
+    
+    public boolean thirdCol() {
+        return board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[1][2] != '-';
+    }
+    
+    public boolean rightDi(){
+        return board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] != '-';
+    }
+    
+    public boolean leftDi() {
+        return board[0][2] == board[1][1] && board [1][1] == board[2][0] && board[1][1] != '-';
+    }
+    
+    
     
     public boolean isTheBoardFilled() {
         for (int i = 0; i < board[0].length; i++) {
@@ -148,34 +189,14 @@ public class TicTacToe /* needs to extend a console program*/{
         return true;
     }
     
-   public String isGameOver() {
+   public String gameOver() {
         if (isTheBoardFilled()) {
-            return "Draw: Game Over";
+            return "Draw: Game Over!";
         } else if (isThereAWinner()) {
-            return "We have a winner!";
+            return "We have a winner! The winner is '" + this.winner +"'s";
         } else {
             return "notOver";
         }
-    }
-
-    public static void main(String[] args) {
-        // The game runs here....
-        TicTacToe newGame = new TicTacToe('X', 'O');
-        
-        while (newGame.isGameOver().equals("notOver")) {
-            // We want to cycle through the turns of user and AI
-            newGame.printBoard();
-            // User have input
-            // User play turn --> ask for new input if failed
-            // print board
-            // check for winning condition
-            // AI Monte Carlo Simulation
-            // AI have input
-            // AI play turn
-            // print board
-        }
-        // print who won
-        
     }
 
 }
