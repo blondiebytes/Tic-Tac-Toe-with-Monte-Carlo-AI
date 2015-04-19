@@ -1,0 +1,83 @@
+Welcome to Tic Tac Toe! You are about to go against the master of Tic Tac Toe. Are you ready? I hope so! To play, enter a row number and column number, and your token shall be put in its place. The rows go from 0 - 2 and the columns go from 0 - 2. You are the X's and I am the O's. We shall see who will win this round.
+
+ | - | - | -
+--------------
+ | - | - | -
+--------------
+ | - | - | -
+--------------
+
+
+It's your turn!
+
+Enter Row Number:
+0
+Enter Column Number: 
+0
+
+ | X | - | -
+--------------
+ | - | - | -
+--------------
+ | - | - | -
+--------------
+
+It's my turn!
+
+ | X | - | -
+--------------
+ | O | - | -
+--------------
+ | - | - | -
+--------------
+
+I picked 1 : 0
+
+It's your turn!
+
+Enter Row Number:
+2
+Enter Column Number: 
+2
+
+ | X | - | -
+--------------
+ | O | - | -
+--------------
+ | - | - | X
+--------------
+
+It's my turn!
+
+ | X | - | -
+--------------
+ | O | - | O
+--------------
+ | - | - | X
+--------------
+
+I picked 1 : 2
+
+It's your turn!
+
+Enter Row Number:
+1
+Enter Column Number: 
+1
+
+ | X | - | -
+--------------
+ | O | X | O
+--------------
+ | - | - | X
+--------------
+
+
+ | X | - | -
+--------------
+ | O | X | O
+--------------
+ | - | - | X
+--------------
+
+We have a winner! The winner is 'X's
