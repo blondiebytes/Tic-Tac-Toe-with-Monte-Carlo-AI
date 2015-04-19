@@ -18,7 +18,7 @@ class MonteCarloAI {
     private int lengthOfCol = 3;
     private Random rand = new Random();
 
-    private final int numberOfSimulations = 10000;
+    private final int numberOfSimulations = 2500;
     //^ the lower == computer more dumb
     private char NONE = '-';
     private char USER = 'X';
@@ -189,7 +189,7 @@ class MonteCarloAI {
             // Who won with this first move?
             // Dealing points appropriately
             if (game.winner != this.NONE) {
-                if (game.winner == this.USER) {
+                if (game.winner == this.AI) {
                     winPoints[firstMove] += this.WIN_PTS;
                 } else {
                     winPoints[firstMove] += this.LOSE_PTS;
