@@ -25,7 +25,7 @@ class MonteCarloAI {
     private char AI = 'O';
 
     // Because we want the winners to stand out from the losers
-    private int WIN_PTS = 10;
+    private int WIN_PTS = 100;
     private int LOSE_PTS = -1;
     private int DRAW_PTS = 0;
     private int MIN_PTS = -1000000000;
@@ -179,41 +179,25 @@ class MonteCarloAI {
                 }
                 // play the randomly choosen position
                 int[] position = this.conversionToRowColSpot(spot);
-                char marker = (this.numberOfSimulations % 2 == 0) ? TicTacToe.aiMarker : TicTacToe.userMarker;
+                char marker = (j % 2 == 0) ? TicTacToe.aiMarker : TicTacToe.userMarker;
                 
-            //    System.out.println("REAL BEFORE: " + game.board[position[0]][position[1]]);
-              //  System.out.println("SIMULATION BEFORE: " + game.simulationBoard[position[0]][position[1]]);
                 game.playTurn(position[0], position[1], marker, game.simulationBoard);
-             //   System.out.println("REAL AFTER: " + game.board[position[0]][position[1]]);
-            //    System.out.println("SIMULATION AFTER: " + game.simulationBoard[position[0]][position[1]]);
                 // take note if it's the first position
                 if (firstMove == -1) {
                     firstMove = spot;
-              //      System.out.println("Firstmove - turn" + firstMove);
                 }
-                //game.printBoard(game.simulationBoard);
             }
             // Who won with this first move?
             // Dealing points appropriately
             if (game.winner != this.NONE) {
                 if (game.winner == this.USER) {
-               //     System.out.println("endRound FM = " + firstMove);
-                //    System.out.println("TotalPts FM = " + winPoints[firstMove]);
                     winPoints[firstMove] += this.WIN_PTS;
-                //    System.out.println("DRAW: AFTER FM = " + winPoints[firstMove]);
                 } else {
-                 //   System.out.println("LOSE: endRound FM = " + firstMove);
-                 //   System.out.println("LOSE: TotalPts FM = " + winPoints[firstMove]);
                     winPoints[firstMove] += this.LOSE_PTS;
-                 //   System.out.println("LOSE: AFTER FM = " + winPoints[firstMove]);
                 }
             } else {
-               // System.out.println("DRAW: endRound FM = " + firstMove);
-              //  System.out.println("DRAW: TotalPts FM = " + winPoints[firstMove]);
                 winPoints[firstMove] += this.DRAW_PTS;
-              //  System.out.println("DRAW: AFTER FM = " + winPoints[firstMove]);
             }
-            
             // Reseting the game for the next simulation
             game.resetGameForSimulation();
         }
@@ -227,6 +211,7 @@ class MonteCarloAI {
                 if (max < winPoints[k]) {
                     max = winPoints[k];
                 }
+                System.out.println(k + " : " + winPoints[k]);
             }
 
             // Could have multiple good candidates
@@ -234,6 +219,7 @@ class MonteCarloAI {
             for (int b = 0; b < this.sizeOfBoard; b++) {
                 if (winPoints[b] == max) {
                     goodSpots[goodSpotIndex++] = b;
+                    System.out.println("BEST" + b);
                 }
             }
             

@@ -28,7 +28,7 @@ public class TicTacToeApplication extends ConsoleProgram {
         newGame.printBoard(newGame.board);
         while (newGame.gameOver(newGame.board).equals("notOver")) {
             // We want to cycle through the turns of user and AI
-         
+            
             // User Input!
             // Getting User's Row
             Integer userRow;
