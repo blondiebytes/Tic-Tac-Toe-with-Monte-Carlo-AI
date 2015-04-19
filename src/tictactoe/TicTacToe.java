@@ -4,6 +4,8 @@ package tictactoe;
 
 import acm.io.IOConsole;
 import acm.program.ConsoleProgram;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 // VIA gameOver method that checks things
 
@@ -44,46 +46,77 @@ import acm.program.ConsoleProgram;
 // ------------
 // | - | - | X
 
-public class TicTacToe extends ConsoleProgram {
+public class TicTacToe extends ConsoleProgram{
 
     protected final char[][] board;
-    private char userMarker;
-    private char aiMarker;
-    private char currentMarker;
+    protected static final char userMarker = 'X';
+    protected static final char aiMarker = 'O';
     private IOConsole console;
     protected char winner;
+    protected char[][] simulationBoard;
+    protected boolean inSimulation;
 
 
-    public TicTacToe(IOConsole console, char userMarker, char aiMarker) {
-        board = new char[3][3];
+    public TicTacToe(IOConsole console) {
+        board = TicTacToe.setBoard();
+        simulationBoard = TicTacToe.setBoard();
         // board[0].length for length of row
         // board.length for length of col
-        for (int i = 0; i < board[0].length; i++) {
-            for (int j = 0; j < board.length; j++) {
+        this.console = console;
+        this.winner = '-';
+        this.inSimulation = false;
+    }
+    
+    static public char[][] setBoard() {
+        char[][] board = new char[3][3];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
                 board[i][j] = '-';
+                System.out.println(i + " : " + j);
             }
         }
-        this.userMarker = userMarker;
-        this.aiMarker = aiMarker;
-        this.currentMarker = userMarker;
-        this.console = console;
+        return board;
+    }
+    
+    // resetting the game for simulations
+    // using a seperate board for simulations
+    public void resetGameForSimulation() {
+        this.inSimulation = true;
+        this.setSimulationBoard();
+        this.winner = '-';
+    }
+    
+    public void setSimulationBoard() {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                switch(board[i][j]) {
+                    case '-': simulationBoard[i][j] = '-';
+                        break;
+                    case TicTacToe.userMarker: simulationBoard[i][j] = userMarker;
+                        break;
+                    case TicTacToe.aiMarker : simulationBoard[i][j] = aiMarker;
+                        break;
+                }
+            }
+        }
+    }
+    
+    public void resetForBackToGamePlay() {
+        this.inSimulation = false;
         this.winner = '-';
     }
     
     // TRUE = user
     // FALSE = AI
-    
-    public boolean whoseTurn() {
-        return currentMarker == userMarker;
-    }
 
-    public void playTurn(int row, int col) {
-        if (row >= 0 && row < board.length && col >= 0 && col < board.length) {
-                this.changeMarker();
-                board[row][col] = currentMarker;
+    // Everything takes in a board now so that we can test simulation boards
+    // and the true boards easier.
+    
+    public void playTurn(int row, int col, char marker, char[][] board) {
+        if (row >= 0 && row < board.length && col >= 0 && col < board.length){
+                board[row][col] = marker;
         }
     }
-    
     
     // check if spot is in range
     public boolean withinRange(int number) {
@@ -91,19 +124,11 @@ public class TicTacToe extends ConsoleProgram {
     }
    
     // check if spot isn't taken
-    public boolean isSpotTaken(int row, int col) {
-       return board[row][col] != '-';
+    public boolean isSpotTaken(int row, int col, char[][] board) {
+        return board[row][col] != '-';
     }
 
-    public void changeMarker() {
-        if (currentMarker == userMarker) {
-            currentMarker = aiMarker;
-        } else {
-            currentMarker = userMarker;
-        }
-    }
-
-    public void printBoard() {
+    public void printBoard(char[][] board) {
         // Attempting to create...
         // | - | - | -
         // ------------
@@ -111,12 +136,12 @@ public class TicTacToe extends ConsoleProgram {
         // ------------
         // | - | - | -
         String[] rows = new String[3];
-        for (int i = 0; i < board[0].length; i++) {
-            for (int j = 0; j < board.length; j++) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
                 if (rows[i] == null) {
                     rows[i] = "";
                 }
-                rows[i] = rows[i] + " | " + board[j][i];
+                rows[i] = rows[i] + " | " + board[i][j];
             }
         }
         console.println();
@@ -127,12 +152,13 @@ public class TicTacToe extends ConsoleProgram {
         console.println();
         
     }
-
-    public boolean isThereAWinner() {
+    
+   
+    public boolean isThereAWinner(char[][] board) {
         // winning conditions
-        boolean diagonalsAndMiddles = rightDi() || leftDi() || middleRow() || secondCol();
-        boolean topAndFirst = topRow() || firstCol();
-        boolean bottomAndThird = bottomRow() || thirdCol();
+        boolean diagonalsAndMiddles = rightDi(board) || leftDi(board) || middleRow(board) || secondCol(board);
+        boolean topAndFirst = topRow(board) || firstCol(board);
+        boolean bottomAndThird = bottomRow(board) || thirdCol(board);
         if (diagonalsAndMiddles) {
             this.winner = board[1][1];
         } else if (topAndFirst){
@@ -145,43 +171,42 @@ public class TicTacToe extends ConsoleProgram {
       
     }
     
-    public boolean topRow() {
+    public boolean topRow(char[][] board) {
         return board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][1] != '-';
     }
     
-    public boolean middleRow() {
+    public boolean middleRow(char[][] board) {
         return board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][1] != '-';
     }
     
-    public boolean bottomRow() {
+    public boolean bottomRow(char[][] board) {
         return board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][1] != '-';
     }
     
-    public boolean firstCol() {
+    public boolean firstCol(char[][] board) {
         return board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[1][0] != '-';
     }
     
-    public boolean secondCol() {
+    public boolean secondCol(char[][] board) {
         return board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[1][1] != '-';
     }
     
-    public boolean thirdCol() {
+    public boolean thirdCol(char[][] board) {
         return board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[1][2] != '-';
     }
     
-    public boolean rightDi(){
+    public boolean rightDi(char[][] board){
         return board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] != '-';
     }
     
-    public boolean leftDi() {
+    public boolean leftDi(char[][] board) {
         return board[0][2] == board[1][1] && board [1][1] == board[2][0] && board[1][1] != '-';
     }
     
     
-    
-    public boolean isTheBoardFilled() {
-        for (int i = 0; i < board[0].length; i++) {
-            for (int j = 0; j < board.length; j++) {
+    public boolean isTheBoardFilled(char[][] board) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
                 if (board[i][j] == '-') {
                     return false;
                 }
@@ -190,14 +215,15 @@ public class TicTacToe extends ConsoleProgram {
         return true;
     }
     
-   public String gameOver() {
-        if (isTheBoardFilled()) {
+   public String gameOver(char[][]board) {
+        if (isTheBoardFilled(board)) {
             return "Draw: Game Over!";
-        } else if (isThereAWinner()) {
+        } else if (isThereAWinner(board)) {
             return "We have a winner! The winner is '" + this.winner +"'s";
         } else {
             return "notOver";
         }
     }
 
+  
 }

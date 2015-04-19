@@ -13,10 +13,10 @@ import acm.program.ConsoleProgram;
  */
 public class TicTacToeApplication extends ConsoleProgram {
  
-    private TicTacToe newGame = new TicTacToe(getConsole(), 'X', 'O');
+    private TicTacToe newGame = new TicTacToe(getConsole());
     private MonteCarloAI ai = new MonteCarloAI();
     
-    public void run() {
+    public void run(){
         // The game runs here....
         println("Welcome to Tic Tac Toe! You are about to go against"
                 + " the master of Tic Tac Toe. Are you ready? I hope"
@@ -25,8 +25,8 @@ public class TicTacToeApplication extends ConsoleProgram {
                 + "0 - 2 and the columns go from 0 - 2. You are"
                 + " the X's and I am the O's. We shall see who will win"
                 + " this round.");
-        newGame.printBoard();
-        while (newGame.gameOver().equals("notOver")) {
+        newGame.printBoard(newGame.board);
+        while (newGame.gameOver(newGame.board).equals("notOver")) {
             // We want to cycle through the turns of user and AI
          
             // User Input!
@@ -50,18 +50,19 @@ public class TicTacToeApplication extends ConsoleProgram {
                 println("Enter Column Number: ");
                 userCol = stringToIntCheck(newGame);
                 r++;
-            } while /* Get new stuff if the spot is taken */ (newGame.isSpotTaken(userRow, userCol));
+            } while /* Get new stuff if the spot is taken */ (newGame.isSpotTaken(userRow, userCol, newGame.board));
 
             // Play User's Turn
-            newGame.playTurn(userRow, userCol);
+            newGame.playTurn(userRow, userCol, TicTacToe.userMarker, newGame.board);
 
             // Print board
-            newGame.printBoard();
+            
+            newGame.printBoard(newGame.board);
 
             // Check for Winning Condition
-            if (!newGame.gameOver().equals("notOver")) {
-                newGame.printBoard();
-                println(newGame.gameOver());
+            if (!newGame.gameOver(newGame.board).equals("notOver")) {
+                newGame.printBoard(newGame.board);
+                println(newGame.gameOver(newGame.board));
                 return;
             }
             println("It's my turn!");
@@ -72,12 +73,12 @@ public class TicTacToeApplication extends ConsoleProgram {
             int[] rowCol = ai.pickSpot(newGame);
                     
             // AI play turn
-            newGame.playTurn(rowCol[0], rowCol[1]);
+            newGame.playTurn(rowCol[0], rowCol[1], TicTacToe.aiMarker, newGame.board);
             
-            newGame.printBoard();
+            newGame.printBoard(newGame.board);
             println("I picked " + rowCol[0] + " : " + rowCol[1]);
         }
-        println(newGame.gameOver());
+        println(newGame.gameOver(newGame.board));
 
     }
 

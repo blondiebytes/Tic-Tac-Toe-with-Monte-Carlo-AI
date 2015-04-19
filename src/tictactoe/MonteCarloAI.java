@@ -18,7 +18,7 @@ class MonteCarloAI {
     private int lengthOfCol = 3;
     private Random rand = new Random();
 
-    private int numberOfSimulations = 25;
+    private final int numberOfSimulations = 2500;
     //^ the lower == computer more dumb
     private char NONE = '-';
     private char USER = 'X';
@@ -53,7 +53,7 @@ class MonteCarloAI {
     //  1 | 1:0 | 1:1 | 1:2
     // --------------------
     //  2 | 2:0 | 2:1 | 2:2
-    public int[] pickSpot(TicTacToe game) {
+    public int[] pickSpot(TicTacToe game){
         return this.conversionToRowColSpot(this.runRandomSimulations(game));
     }
 
@@ -63,7 +63,7 @@ class MonteCarloAI {
 
         for (int i = 0; i < lengthOfRow; i++) {
             for (int j = 0; j < lengthOfCol; j++) {
-                if (game.board[i][j] == this.NONE) {
+                if (game.simulationBoard[i][j] == this.NONE) {
                     // add to spot avaliable
                     int spot = conversionToNumericalSpot(i, j);
                     spotAvaliable[index++] = spot;
@@ -136,15 +136,13 @@ class MonteCarloAI {
     }
 
     // KEY TO THE SIMULATIONS/AI:
-    public int runRandomSimulations(TicTacToe game) {
+    public int runRandomSimulations(TicTacToe game){
         int[] winPoints = new int[9];
         int[] goodSpots = new int[9];
         int goodSpotIndex = 0;
         boolean isThereAFreeSpace = false;
-        TicTacToe tempGame = game;
-        char winner;
         int firstMove;
-
+        game.resetGameForSimulation();
         // Where is there a good space? Setting it up.
         for (int i = 0; i < lengthOfRow; i++) {
             for (int j = 0; j < lengthOfCol; j++) {
@@ -167,52 +165,60 @@ class MonteCarloAI {
         for (int j = 0; j < this.numberOfSimulations; j++) {
             // set to -1 so we can track what the first move is
             firstMove = -1;
-            System.out.println(tempGame.gameOver());
+            
+           
             // Play a game...
-            while (tempGame.gameOver().equals("notOver")) {
+            while (game.gameOver(game.simulationBoard).equals("notOver")) {
                 // The computer is basically playing the user and the comp
                 // But we just take one side.
-                int spot = this.chooseRandomSpot(tempGame);
+                int spot = this.chooseRandomSpot(game);
                 if (spot == this.NO_SPOT /* meaning there was no spot avaliable */) {
-                    winner = this.NONE;
+                    game.winner = this.NONE;
                     // we are done with this game. 
                     break;
                 }
                 // play the randomly choosen position
                 int[] position = this.conversionToRowColSpot(spot);
-                tempGame.playTurn(position[0], position[1]);
+                char marker = (this.numberOfSimulations % 2 == 0) ? TicTacToe.aiMarker : TicTacToe.userMarker;
+                
+            //    System.out.println("REAL BEFORE: " + game.board[position[0]][position[1]]);
+              //  System.out.println("SIMULATION BEFORE: " + game.simulationBoard[position[0]][position[1]]);
+                game.playTurn(position[0], position[1], marker, game.simulationBoard);
+             //   System.out.println("REAL AFTER: " + game.board[position[0]][position[1]]);
+            //    System.out.println("SIMULATION AFTER: " + game.simulationBoard[position[0]][position[1]]);
                 // take note if it's the first position
                 if (firstMove == -1) {
                     firstMove = spot;
-                    System.out.println("Firstmove - turn" + firstMove);
+              //      System.out.println("Firstmove - turn" + firstMove);
                 }
+                //game.printBoard(game.simulationBoard);
             }
-
             // Who won with this first move?
             // Dealing points appropriately
-            if (tempGame.winner != this.NONE) {
-                if (tempGame.winner == this.USER) {
-                    System.out.println("endRound FM = " + firstMove);
-                    System.out.println("TotalPts FM = " + winPoints[firstMove]);
+            if (game.winner != this.NONE) {
+                if (game.winner == this.USER) {
+               //     System.out.println("endRound FM = " + firstMove);
+                //    System.out.println("TotalPts FM = " + winPoints[firstMove]);
                     winPoints[firstMove] += this.WIN_PTS;
-                    System.out.println("DRAW: AFTER FM = " + winPoints[firstMove]);
+                //    System.out.println("DRAW: AFTER FM = " + winPoints[firstMove]);
                 } else {
-                    System.out.println("LOSE: endRound FM = " + firstMove);
-                    System.out.println("LOSE: TotalPts FM = " + winPoints[firstMove]);
+                 //   System.out.println("LOSE: endRound FM = " + firstMove);
+                 //   System.out.println("LOSE: TotalPts FM = " + winPoints[firstMove]);
                     winPoints[firstMove] += this.LOSE_PTS;
-                    System.out.println("LOSE: AFTER FM = " + winPoints[firstMove]);
+                 //   System.out.println("LOSE: AFTER FM = " + winPoints[firstMove]);
                 }
             } else {
-                System.out.println("DRAW: endRound FM = " + firstMove);
-                System.out.println("DRAW: TotalPts FM = " + winPoints[firstMove]);
+               // System.out.println("DRAW: endRound FM = " + firstMove);
+              //  System.out.println("DRAW: TotalPts FM = " + winPoints[firstMove]);
                 winPoints[firstMove] += this.DRAW_PTS;
-                System.out.println("DRAW: AFTER FM = " + winPoints[firstMove]);
+              //  System.out.println("DRAW: AFTER FM = " + winPoints[firstMove]);
             }
             
             // Reseting the game for the next simulation
-            tempGame = game;
+            game.resetGameForSimulation();
         }
         
+        game.resetForBackToGamePlay();
         // After running through all of stimulations...
 
             int max = this.MIN_PTS;
