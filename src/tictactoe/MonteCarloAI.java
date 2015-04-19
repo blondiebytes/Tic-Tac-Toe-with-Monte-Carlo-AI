@@ -57,13 +57,13 @@ class MonteCarloAI {
         return this.conversionToRowColSpot(this.runRandomSimulations(game));
     }
 
-    public int chooseRandomSpot(TicTacToe game) {
+    public int chooseRandomSpot(char[][] board) {
         int[] spotAvaliable = new int[9];
         int index = 0;
 
         for (int i = 0; i < lengthOfRow; i++) {
             for (int j = 0; j < lengthOfCol; j++) {
-                if (game.simulationBoard[i][j] == this.NONE) {
+                if (board[i][j] == this.NONE) {
                     // add to spot avaliable
                     int spot = conversionToNumericalSpot(i, j);
                     spotAvaliable[index++] = spot;
@@ -139,10 +139,10 @@ class MonteCarloAI {
     public int runRandomSimulations(TicTacToe game){
         int[] winPoints = new int[9];
         int[] goodSpots = new int[9];
+        char[][] tempBoard = game.setSimulationBoard();
         int goodSpotIndex = 0;
         boolean isThereAFreeSpace = false;
         int firstMove;
-        game.resetGameForSimulation();
         // Where is there a good space? Setting it up.
         for (int i = 0; i < lengthOfRow; i++) {
             for (int j = 0; j < lengthOfCol; j++) {
@@ -166,12 +166,11 @@ class MonteCarloAI {
             // set to -1 so we can track what the first move is
             firstMove = -1;
             
-           
             // Play a game...
-            while (game.gameOver(game.simulationBoard).equals("notOver")) {
+            while (game.gameOver(tempBoard).equals("notOver")) {
                 // The computer is basically playing the user and the comp
                 // But we just take one side.
-                int spot = this.chooseRandomSpot(game);
+                int spot = this.chooseRandomSpot(tempBoard);
                 if (spot == this.NO_SPOT /* meaning there was no spot avaliable */) {
                     game.winner = this.NONE;
                     // we are done with this game. 
@@ -181,7 +180,7 @@ class MonteCarloAI {
                 int[] position = this.conversionToRowColSpot(spot);
                 char marker = (j % 2 == 0) ? TicTacToe.aiMarker : TicTacToe.userMarker;
                 
-                game.playTurn(position[0], position[1], marker, game.simulationBoard);
+                game.playTurn(position[0], position[1], marker, tempBoard);
                 // take note if it's the first position
                 if (firstMove == -1) {
                     firstMove = spot;
@@ -199,7 +198,7 @@ class MonteCarloAI {
                 winPoints[firstMove] += this.DRAW_PTS;
             }
             // Reseting the game for the next simulation
-            game.resetGameForSimulation();
+            tempBoard = game.setSimulationBoard();
         }
         
         game.resetForBackToGamePlay();

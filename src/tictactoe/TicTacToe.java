@@ -53,18 +53,14 @@ public class TicTacToe extends ConsoleProgram{
     protected static final char aiMarker = 'O';
     private IOConsole console;
     protected char winner;
-    protected char[][] simulationBoard;
-    protected boolean inSimulation;
 
 
     public TicTacToe(IOConsole console) {
         board = TicTacToe.setBoard();
-        simulationBoard = TicTacToe.setBoard();
         // board[0].length for length of row
         // board.length for length of col
         this.console = console;
         this.winner = '-';
-        this.inSimulation = false;
     }
     
     static public char[][] setBoard() {
@@ -78,15 +74,9 @@ public class TicTacToe extends ConsoleProgram{
         return board;
     }
     
-    // resetting the game for simulations
-    // using a seperate board for simulations
-    public void resetGameForSimulation() {
-        this.inSimulation = true;
-        this.setSimulationBoard();
-        this.winner = '-';
-    }
-    
-    public void setSimulationBoard() {
+    // using a seperate board for simulations  
+    public char[][] setSimulationBoard() {
+        char[][] simulationBoard = new char[3][3];
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
                 switch(board[i][j]) {
@@ -99,10 +89,11 @@ public class TicTacToe extends ConsoleProgram{
                 }
             }
         }
+        this.winner = '-';
+        return simulationBoard;
     }
     
     public void resetForBackToGamePlay() {
-        this.inSimulation = false;
         this.winner = '-';
     }
     
