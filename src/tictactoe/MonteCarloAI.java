@@ -160,12 +160,14 @@ class MonteCarloAI {
         if (!isThereAFreeSpace) {
             throw new RuntimeException("There aren't any free spaces!");
         }
+        
+        
 
         //play it out yoo...
         for (int j = 0; j < this.numberOfSimulations; j++) {
             // set to -1 so we can track what the first move is
             firstMove = -1;
-            
+            int flipper = 0;
             // Play a game...
             while (game.gameOver(tempBoard).equals("notOver")) {
                 // The computer is basically playing the user and the comp
@@ -173,13 +175,14 @@ class MonteCarloAI {
                 int spot = this.chooseRandomSpot(tempBoard);
                 // play the randomly choosen position
                 int[] position = this.conversionToRowColSpot(spot);
-                char marker = (j % 2 == 0) ? TicTacToe.aiMarker : TicTacToe.userMarker;
+                char marker = (flipper % 2 == 0) ? TicTacToe.aiMarker : TicTacToe.userMarker;
                 
                 game.playTurn(position[0], position[1], marker, tempBoard);
                 // take note if it's the first position
                 if (firstMove == -1) {
                     firstMove = spot;
                 }
+                flipper++;
             }
             // Who won with this first move?
             // Dealing points appropriately
