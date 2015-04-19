@@ -51,33 +51,58 @@ It's my turn!
 
  | X | - | -
 --------------
- | O | - | O
+ | O | O | -
 --------------
  | - | - | X
 --------------
 
-I picked 1 : 2
+I picked 1 : 1
 
 It's your turn!
 
 Enter Row Number:
-1
+0
+Enter Column Number: 
+2
+
+ | X | - | X
+--------------
+ | O | O | -
+--------------
+ | - | - | X
+--------------
+
+It's my turn!
+
+ | X | - | X
+--------------
+ | O | O | -
+--------------
+ | - | O | X
+--------------
+
+I picked 2 : 1
+
+It's your turn!
+
+Enter Row Number:
+0
 Enter Column Number: 
 1
 
- | X | - | -
+ | X | X | X
 --------------
- | O | X | O
+ | O | O | -
 --------------
- | - | - | X
+ | - | O | X
 --------------
 
 
- | X | - | -
+ | X | X | X
 --------------
- | O | X | O
+ | O | O | -
 --------------
- | - | - | X
+ | - | O | X
 --------------
 
 We have a winner! The winner is 'X's

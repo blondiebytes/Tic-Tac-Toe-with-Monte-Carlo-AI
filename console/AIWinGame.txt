@@ -24,14 +24,39 @@ Enter Column Number:
 
 It's my turn!
 
- | X | - | -
+ | X | - | O
 --------------
- | - | - | O
+ | - | - | -
 --------------
  | - | - | -
 --------------
 
-I picked 1 : 2
+I picked 0 : 2
+
+It's your turn!
+
+Enter Row Number:
+1
+Enter Column Number: 
+1
+
+ | X | - | O
+--------------
+ | - | X | -
+--------------
+ | - | - | -
+--------------
+
+It's my turn!
+
+ | X | - | O
+--------------
+ | - | X | -
+--------------
+ | - | - | O
+--------------
+
+I picked 2 : 2
 
 It's your turn!
 
@@ -40,71 +65,46 @@ Enter Row Number:
 Enter Column Number: 
 1
 
- | X | X | -
+ | X | X | O
+--------------
+ | - | X | -
 --------------
  | - | - | O
---------------
- | - | - | -
 --------------
 
 It's my turn!
 
- | X | X | -
+ | X | X | O
 --------------
- | - | - | O
+ | - | X | -
 --------------
- | - | O | -
+ | O | - | O
 --------------
 
-I picked 2 : 1
+I picked 2 : 0
 
 It's your turn!
 
 Enter Row Number:
-2
+1
 Enter Column Number: 
 0
 
+ | X | X | O
+--------------
  | X | X | -
 --------------
- | - | - | O
---------------
- | X | O | -
+ | O | - | O
 --------------
 
 It's my turn!
 
- | X | X | -
+ | X | X | O
 --------------
- | - | O | O
---------------
- | X | O | -
---------------
-
-I picked 1 : 1
-
-It's your turn!
-
-Enter Row Number:
-2
-Enter Column Number: 
-2
-
- | X | X | -
---------------
- | - | O | O
---------------
- | X | O | X
---------------
-
-It's my turn!
-
  | X | X | -
 --------------
  | O | O | O
 --------------
- | X | O | X
---------------
 
-I picked 1 : 0
+I picked 2 : 1
 We have a winner! The winner is 'O's
