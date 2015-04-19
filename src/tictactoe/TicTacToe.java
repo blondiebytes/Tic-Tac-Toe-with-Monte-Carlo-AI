@@ -207,10 +207,12 @@ public class TicTacToe extends ConsoleProgram{
     }
     
    public String gameOver(char[][]board) {
-        if (isTheBoardFilled(board) & !isThereAWinner(board)) {
-            return "Draw: Game Over!";
-        } else if (isThereAWinner(board)) {
+       boolean didSomeoneWin = isThereAWinner(board);
+        if (didSomeoneWin) {
             return "We have a winner! The winner is '" + this.winner +"'s";
+        } else if (isTheBoardFilled(board)) {
+            this.winner = '-';
+            return "Draw: Game Over!";
         } else {
             return "notOver";
         }
