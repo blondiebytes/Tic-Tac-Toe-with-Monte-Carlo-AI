@@ -18,7 +18,7 @@ class MonteCarloAI {
     private int lengthOfCol = 3;
     private Random rand = new Random();
 
-    private final int numberOfSimulations = 2500;
+    private final int numberOfSimulations = 3;
     //^ the lower == computer more dumb
     private char NONE = '-';
     private char USER = 'X';
@@ -55,6 +55,7 @@ class MonteCarloAI {
     
     
     public int pickSpot(TicTacToe game){
+        // add one because when we play turns, we want it to look to be 1-9 based
         return this.runRandomSimulations(game) + 1;
     }
 
@@ -68,8 +69,10 @@ class MonteCarloAI {
             }
         
         if (index == 0) {
+            //System.out.println("no spot avaliable");
             return this.NO_SPOT; // no spot avaliable
         }
+       // System.out.println("Spots avaliable" + index);
 
         return spotAvaliable[rand() % index];
     }
@@ -88,7 +91,7 @@ class MonteCarloAI {
         int firstMove;
         // Where is there a good space? Setting it up.
         for (int i = 0; i < sizeOfBoard; i++) {
-                if (game.board[i] == '-') {
+                if (tempBoard[i] == '-') {
                     isThereAFreeSpace = true;
                     winPoints[i] = 0;
                 } else {
@@ -114,12 +117,19 @@ class MonteCarloAI {
             while (game.gameOver(tempBoard).equals("notOver")) {
                // find a spot
                 int spot = this.chooseRandomSpot(tempBoard);
+                
+                if (spot == this.NO_SPOT /* meaning there was no spot avaliable */) {
+                     game.winner = this.NONE;
+                     // we are done with this game. 
+                     break;
+                 }
+               
                 // The computer is basically playing the user and the comp
                 // But we just take one side.
                 char marker = (flipper % 2 == 0) ? TicTacToe.aiMarker : TicTacToe.userMarker;
-                
                 // the spot
-                game.playTurn(spot, marker, tempBoard);
+                // add one because when we play turns, we want it to look to be 1-9 based
+                game.playTurn(spot + 1, marker, tempBoard);
                 
                 // take note if it's the first position
                 if (firstMove == -1) {
@@ -127,6 +137,7 @@ class MonteCarloAI {
                 }
                 flipper++;
             }
+            
             // Who won with this first move?
             // Dealing points appropriately
             if (game.winner != this.NONE) {

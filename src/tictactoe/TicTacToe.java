@@ -79,7 +79,7 @@ public class TicTacToe extends ConsoleProgram{
     // using a seperate board for simulations  
     public char[] setSimulationBoard() {
         char[] simulationBoard = new char[9];
-        for (int i = 0; i < board.length; i++) {{
+        for (int i = 0; i < board.length; i++) {
                 switch(board[i]) {
                     case '-': simulationBoard[i]= '-';
                         break;
@@ -88,7 +88,7 @@ public class TicTacToe extends ConsoleProgram{
                     case TicTacToe.aiMarker : simulationBoard[i] = aiMarker;
                         break;
                 }
-            }
+            
         }
         this.winner = '-';
         return simulationBoard;
@@ -105,14 +105,14 @@ public class TicTacToe extends ConsoleProgram{
     // and the true boards easier.
     
     public void playTurn(int spot, char marker, char[] board) {
-        if (spot >= 1 && spot < board.length){
+        if (spot >= 1 && spot < board.length + 1){
             board[spot-1] = marker;
         }
     }
     
     // check if spot is in range
     public boolean withinRange(int number) {
-        return number >= 0 && number < board.length;
+        return number >= 0 && number < board.length + 1;
     }
    
     // check if spot isn't taken
