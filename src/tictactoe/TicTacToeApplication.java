@@ -20,19 +20,20 @@ public class TicTacToeApplication extends ConsoleProgram {
         // The game runs here....
         println("Welcome to Tic Tac Toe! You are about to go against"
                 + " the master of Tic Tac Toe. Are you ready? I hope"
-                + " so! To play, enter a row number and column number,"
-                + " and your token shall be put in its place. The rows go from "
-                + "0 - 2 and the columns go from 0 - 2. You are"
+                + " so! To play, enter a  number,"
+                + " and your token shall be put in its place. The numbers go from"
+                + "1 - 9, left to right. You are"
                 + " the X's and I am the O's. We shall see who will win"
                 + " this round.");
+        newGame.printIndexBoard(newGame.board);
         newGame.printBoard(newGame.board);
+        
         while (newGame.gameOver(newGame.board).equals("notOver")) {
             // We want to cycle through the turns of user and AI
             
             // User Input!
             // Getting User's Row
-            Integer userRow;
-            Integer userCol;
+            Integer userSpot;
             Integer r = 0;
             do {
                 println();
@@ -42,18 +43,14 @@ public class TicTacToeApplication extends ConsoleProgram {
                     println("It's your turn!");
                 }
                 println();
-                // Getting User Row
-                println("Enter Row Number:");
-                userRow = stringToIntCheck(newGame);
-
-                // Getting User's Col
-                println("Enter Column Number: ");
-                userCol = stringToIntCheck(newGame);
+                // Getting User's SPot
+                println("Pick a Spot:");
+                userSpot = stringToIntCheck(newGame);
                 r++;
-            } while /* Get new stuff if the spot is taken */ (newGame.isSpotTaken(userRow, userCol, newGame.board));
+            } while /* Get new stuff if the spot is taken */ (newGame.isSpotTaken(userSpot, newGame.board));
 
             // Play User's Turn
-            newGame.playTurn(userRow, userCol, TicTacToe.userMarker, newGame.board);
+            newGame.playTurn(userSpot, TicTacToe.userMarker, newGame.board);
 
             // Print board
             
@@ -65,18 +62,19 @@ public class TicTacToeApplication extends ConsoleProgram {
                 println(newGame.gameOver(newGame.board));
                 return;
             }
+            
             println("It's my turn!");
             
             // AI Monte Carlo Simulation that gives back array of row and col
             
             // AI picks where it want to go
-            int[] rowCol = ai.pickSpot(newGame);
+            int spot = ai.pickSpot(newGame);
                     
             // AI play turn
-            newGame.playTurn(rowCol[0], rowCol[1], TicTacToe.aiMarker, newGame.board);
+            newGame.playTurn(spot, TicTacToe.aiMarker, newGame.board);
             
             newGame.printBoard(newGame.board);
-            println("I picked " + rowCol[0] + " : " + rowCol[1]);
+            println("I picked " + (spot + 1));
         }
         println(newGame.gameOver(newGame.board));
 

@@ -23,13 +23,18 @@ import java.util.logging.Logger;
 //   state of the game
 
 // Picture of Game with Index:
-//    |  0  |  1  |  2  
-// --------------------
-//  0 | 0:0 | 0:1 | 0:2
-// --------------------
-//  1 | 1:0 | 1:1 | 1:2
-// --------------------
-//  2 | 2:0 | 2:1 | 2:2
+    // FOR STORAGE:
+    //  0 | 1 | 2
+    // --------------------
+    //  3 | 4 | 5
+    // --------------------
+    //  6 | 7 | 8
+     // WHAT THE USER THINKS:
+    //  1 | 2 | 3
+    // --------------------
+    //  4 | 5 | 6
+    // --------------------
+    //  7 | 8 | 9
 //
 //
 // UI Picture of Game:
@@ -48,7 +53,7 @@ import java.util.logging.Logger;
 
 public class TicTacToe extends ConsoleProgram{
 
-    protected final char[][] board;
+    protected final char[] board;
     protected static final char userMarker = 'X';
     protected static final char aiMarker = 'O';
     private IOConsole console;
@@ -63,28 +68,24 @@ public class TicTacToe extends ConsoleProgram{
         this.winner = '-';
     }
     
-    static public char[][] setBoard() {
-        char[][] board = new char[3][3];
+    static public char[] setBoard() {
+        char[] board = new char[9];
         for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                board[i][j] = '-';
-                //System.out.println(i + " : " + j);
+            board[i] = '-';
             }
-        }
         return board;
     }
     
     // using a seperate board for simulations  
-    public char[][] setSimulationBoard() {
-        char[][] simulationBoard = new char[3][3];
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                switch(board[i][j]) {
-                    case '-': simulationBoard[i][j] = '-';
+    public char[] setSimulationBoard() {
+        char[] simulationBoard = new char[9];
+        for (int i = 0; i < board.length; i++) {{
+                switch(board[i]) {
+                    case '-': simulationBoard[i]= '-';
                         break;
-                    case TicTacToe.userMarker: simulationBoard[i][j] = userMarker;
+                    case TicTacToe.userMarker: simulationBoard[i] = userMarker;
                         break;
-                    case TicTacToe.aiMarker : simulationBoard[i][j] = aiMarker;
+                    case TicTacToe.aiMarker : simulationBoard[i] = aiMarker;
                         break;
                 }
             }
@@ -103,9 +104,9 @@ public class TicTacToe extends ConsoleProgram{
     // Everything takes in a board now so that we can test simulation boards
     // and the true boards easier.
     
-    public void playTurn(int row, int col, char marker, char[][] board) {
-        if (row >= 0 && row < board.length && col >= 0 && col < board.length){
-                board[row][col] = marker;
+    public void playTurn(int spot, char marker, char[] board) {
+        if (spot >= 1 && spot < board.length){
+            board[spot-1] = marker;
         }
     }
     
@@ -115,98 +116,105 @@ public class TicTacToe extends ConsoleProgram{
     }
    
     // check if spot isn't taken
-    public boolean isSpotTaken(int row, int col, char[][] board) {
-        return board[row][col] != '-';
+    public boolean isSpotTaken(int spot, char[] board) {
+        return board[spot-1] != '-';
     }
 
-    public void printBoard(char[][] board) {
+    public void printBoard(char[] board) {
         // Attempting to create...
         // | - | - | -
         // ------------
         // | - | - | -
         // ------------
         // | - | - | -
-        String[] rows = new String[3];
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                if (rows[i] == null) {
-                    rows[i] = "";
-                }
-                rows[i] = rows[i] + " | " + board[i][j];
-            }
-        }
+        
         console.println();
-        for (String s : rows) {
-            console.println(s);
-            console.println("--------------");
+        for (int i = 0; i < board.length; i++) {
+             if (i % 3 == 0 && i != 0) {
+                console.println();
+                console.println("-------------");
+            }
+            console.print(" | " + board[i]);
+           
         }
         console.println();
         
     }
     
+    public void printIndexBoard(char[] board) {
+         console.println();
+        for (int i = 0; i < board.length; i++) {
+             if (i % 3 == 0 && i != 0) {
+                console.println();
+                console.println("-------------");
+            }
+            console.print(" | " + (i + 1));
+           
+        }
+        console.println();
+    }
+    
    
-    public boolean isThereAWinner(char[][] board) {
+    public boolean isThereAWinner(char[] board) {
         // winning conditions
-        boolean diagonalsAndMiddles = rightDi(board) || leftDi(board) || middleRow(board) || secondCol(board);
-        boolean topAndFirst = topRow(board) || firstCol(board);
-        boolean bottomAndThird = bottomRow(board) || thirdCol(board);
+        boolean diagonalsAndMiddles = (rightDi(board) || leftDi(board) || middleRow(board) || secondCol(board)) && board[4] != '-';
+        boolean topAndFirst = (topRow(board) || firstCol(board)) && board[0] != '-';
+        boolean bottomAndThird = (bottomRow(board) || thirdCol(board)) && board[8] != '-';
         if (diagonalsAndMiddles) {
-            this.winner = board[1][1];
+            this.winner = board[4];
         } else if (topAndFirst){
-            this.winner = board[0][0];
+            this.winner = board[0];
         } else if (bottomAndThird) {
-            this.winner = board[2][2];
+            this.winner = board[8];
         }
         
         return diagonalsAndMiddles || topAndFirst || bottomAndThird;
       
     }
     
-    public boolean topRow(char[][] board) {
-        return board[0][0] == board[0][1] && board[0][1] == board[0][2] && board[0][1] != '-';
+    public boolean topRow(char[] board) {
+        return board[0] == board[1] && board[1] == board[2];
     }
     
-    public boolean middleRow(char[][] board) {
-        return board[1][0] == board[1][1] && board[1][1] == board[1][2] && board[1][1] != '-';
+    public boolean middleRow(char[] board) {
+        return board[3] == board[4] && board[4] == board[5];
     }
     
-    public boolean bottomRow(char[][] board) {
-        return board[2][0] == board[2][1] && board[2][1] == board[2][2] && board[2][1] != '-';
+    public boolean bottomRow(char[] board) {
+        return board[6] == board[7] && board[7] == board[8];
     }
     
-    public boolean firstCol(char[][] board) {
-        return board[0][0] == board[1][0] && board[1][0] == board[2][0] && board[1][0] != '-';
+    public boolean firstCol(char[] board) {
+        return board[0] == board[3] && board[3] == board[6];
     }
     
-    public boolean secondCol(char[][] board) {
-        return board[0][1] == board[1][1] && board[1][1] == board[2][1] && board[1][1] != '-';
+    public boolean secondCol(char[] board) {
+        return board[1] == board[4] && board[4] == board[7];
     }
     
-    public boolean thirdCol(char[][] board) {
-        return board[0][2] == board[1][2] && board[1][2] == board[2][2] && board[1][2] != '-';
+    public boolean thirdCol(char[] board) {
+        return board[2] == board[5] && board[5] == board[8];
     }
     
-    public boolean rightDi(char[][] board){
-        return board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[1][1] != '-';
+    public boolean rightDi(char[] board){
+        return board[0] == board[4] && board[4] == board[8];
     }
     
-    public boolean leftDi(char[][] board) {
-        return board[0][2] == board[1][1] && board [1][1] == board[2][0] && board[1][1] != '-';
+    public boolean leftDi(char[] board) {
+        return board[2] == board[4] && board [4] == board[6];
     }
     
     
-    public boolean isTheBoardFilled(char[][] board) {
+    public boolean isTheBoardFilled(char[] board) {
         for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
-                if (board[i][j] == '-') {
+                if (board[i] == '-') {
                     return false;
                 }
-            }
         }
         return true;
     }
     
-   public String gameOver(char[][]board) {
+   public String gameOver(char[] board) {
        boolean didSomeoneWin = isThereAWinner(board);
         if (didSomeoneWin) {
             return "We have a winner! The winner is '" + this.winner +"'s";
