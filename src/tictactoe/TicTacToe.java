@@ -56,7 +56,7 @@ public class TicTacToe extends ConsoleProgram{
     protected final char[] board;
     protected static final char userMarker = 'X';
     protected static final char aiMarker = 'O';
-    private IOConsole console;
+    protected IOConsole console;
     protected char winner;
 
 
@@ -112,7 +112,7 @@ public class TicTacToe extends ConsoleProgram{
     
     // check if spot is in range
     public boolean withinRange(int number) {
-        return number >= 0 && number < board.length + 1;
+        return number > 0 && number < board.length + 1;
     }
    
     // check if spot isn't taken

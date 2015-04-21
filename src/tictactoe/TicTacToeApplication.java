@@ -22,7 +22,7 @@ public class TicTacToeApplication extends ConsoleProgram {
                 + " the master of Tic Tac Toe. Are you ready? I hope"
                 + " so! To play, enter a  number,"
                 + " and your token shall be put in its place. The numbers go from"
-                + "1 - 9, left to right. You are"
+                + " 1 - 9, left to right. You are"
                 + " the X's and I am the O's. We shall see who will win"
                 + " this round.");
         newGame.printIndexBoard(newGame.board);
@@ -44,7 +44,7 @@ public class TicTacToeApplication extends ConsoleProgram {
                 }
                 println();
                 // Getting User's SPot
-                println("Pick a Spot:");
+                println("Pick a Spot: ");
                 userSpot = stringToIntCheck(newGame);
                 r++;
             } while /* Get new stuff if the spot is taken */ (newGame.isSpotTaken(userSpot, newGame.board));
@@ -59,10 +59,11 @@ public class TicTacToeApplication extends ConsoleProgram {
             // Check for Winning Condition
             if (!newGame.gameOver(newGame.board).equals("notOver")) {
                 newGame.printBoard(newGame.board);
+                println();
                 println(newGame.gameOver(newGame.board));
                 return;
             }
-            
+            println();
             println("It's my turn!");
 //            
 //            // AI Monte Carlo Simulation that gives back array of row and col
@@ -72,10 +73,11 @@ public class TicTacToeApplication extends ConsoleProgram {
                     
             // AI play turn
             newGame.playTurn(spot, TicTacToe.aiMarker, newGame.board);
-            
             newGame.printBoard(newGame.board);
-            println("I picked " + (spot + 1));
+            println();
+            println("I picked " + spot + ".");
         }
+        println();
         println(newGame.gameOver(newGame.board));
 
     }
@@ -83,7 +85,7 @@ public class TicTacToeApplication extends ConsoleProgram {
     public int stringToIntCheck(TicTacToe newGame) {
         String userInput = readLine().trim();
         while (!newGame.withinRange(Integer.valueOf(userInput))) {
-            println("Sorry, that's not a good row number. Try again");
+            println("Sorry, that's not a valid spot. Try again.");
             userInput = readLine().trim();
         }
         return Integer.valueOf(userInput);

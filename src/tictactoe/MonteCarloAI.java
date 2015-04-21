@@ -18,7 +18,7 @@ class MonteCarloAI {
     private int lengthOfCol = 3;
     private Random rand = new Random();
 
-    private final int numberOfSimulations = 3;
+    private final int numberOfSimulations = 2500;
     //^ the lower == computer more dumb
     private char NONE = '-';
     private char USER = 'X';
@@ -163,7 +163,7 @@ class MonteCarloAI {
                 if (max < winPoints[k]) {
                     max = winPoints[k];
                 }
-                System.out.println(k + " : " + winPoints[k]);
+                System.out.println((k+1) + " : " + winPoints[k]);
             }
 
             // Could have multiple good candidates
@@ -171,7 +171,7 @@ class MonteCarloAI {
             for (int b = 0; b < this.sizeOfBoard; b++) {
                 if (winPoints[b] == max) {
                     goodSpots[goodSpotIndex++] = b;
-                    System.out.println("Best Spot = " + b);
+                    System.out.println("Best Spot = " + (b+1));
                 }
             }
             

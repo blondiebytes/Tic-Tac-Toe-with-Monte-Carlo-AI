@@ -1,140 +1,123 @@
-Welcome to Tic Tac Toe! You are about to go against the master of Tic Tac Toe. Are you ready? I hope so! To play, enter a row number and column number, and your token shall be put in its place. The rows go from 0 - 2 and the columns go from 0 - 2. You are the X's and I am the O's. We shall see who will win this round.
+Welcome to Tic Tac Toe! You are about to go against the master of Tic Tac Toe. Are you ready? I hope so! To play, enter a  number, and your token shall be put in its place. The numbers go from 1 - 9, left to right. You are the X's and I am the O's. We shall see who will win this round.
+
+ | 1 | 2 | 3
+-------------
+ | 4 | 5 | 6
+-------------
+ | 7 | 8 | 9
 
  | - | - | -
---------------
+-------------
  | - | - | -
---------------
+-------------
  | - | - | -
---------------
-
 
 It's your turn!
 
-Enter Row Number:
-0
-Enter Column Number: 
-0
-
- | X | - | -
---------------
- | - | - | -
---------------
- | - | - | -
---------------
-
-It's my turn!
-
- | X | - | -
---------------
- | - | O | -
---------------
- | - | - | -
---------------
-
-I picked 1 : 1
-
-It's your turn!
-
-Enter Row Number:
-2
-Enter Column Number: 
-2
-
- | X | - | -
---------------
- | - | O | -
---------------
- | - | - | X
---------------
-
-It's my turn!
-
- | X | - | -
---------------
- | - | O | O
---------------
- | - | - | X
---------------
-
-I picked 1 : 2
-
-It's your turn!
-
-Enter Row Number:
+Pick a Spot: 
 1
-Enter Column Number: 
-0
 
  | X | - | -
---------------
- | X | O | O
---------------
- | - | - | X
---------------
+-------------
+ | - | - | -
+-------------
+ | - | - | -
 
 It's my turn!
 
  | X | - | -
---------------
- | X | O | O
---------------
- | O | - | X
---------------
+-------------
+ | - | O | -
+-------------
+ | - | - | -
 
-I picked 2 : 0
+I picked 5.
 
 It's your turn!
 
-Enter Row Number:
-0
-Enter Column Number: 
-2
+Pick a Spot: 
+3
 
  | X | - | X
---------------
- | X | O | O
---------------
- | O | - | X
---------------
+-------------
+ | - | O | -
+-------------
+ | - | - | -
 
 It's my turn!
 
  | X | O | X
---------------
- | X | O | O
---------------
- | O | - | X
---------------
+-------------
+ | - | O | -
+-------------
+ | - | - | -
 
-I picked 0 : 1
+I picked 2.
 
 It's your turn!
 
-Enter Row Number:
-0
-Enter Column Number: 
-1
+Pick a Spot: 
+8
+
+ | X | O | X
+-------------
+ | - | O | -
+-------------
+ | - | X | -
+
+It's my turn!
+
+ | X | O | X
+-------------
+ | - | O | O
+-------------
+ | - | X | -
+
+I picked 6.
+
+It's your turn!
+
+Pick a Spot: 
+3
 
 That spot is already taken! Try again!
 
-Enter Row Number:
-2
-Enter Column Number: 
-1
+Pick a Spot: 
+4
 
  | X | O | X
---------------
+-------------
  | X | O | O
---------------
- | O | X | X
---------------
+-------------
+ | - | X | -
 
+It's my turn!
 
  | X | O | X
---------------
+-------------
  | X | O | O
---------------
+-------------
+ | O | X | -
+
+I picked 7.
+
+It's your turn!
+
+Pick a Spot: 
+10
+Sorry, that's not a valid spot. Try again.
+9
+
+ | X | O | X
+-------------
+ | X | O | O
+-------------
  | O | X | X
---------------
+
+ | X | O | X
+-------------
+ | X | O | O
+-------------
+ | O | X | X
 
 Draw: Game Over!
