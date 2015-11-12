@@ -68,7 +68,7 @@ public class TicTacToe extends ConsoleProgram{
         this.winner = '-';
     }
     
-    static public char[] setBoard() {
+    public static char[] setBoard() {
         char[] board = new char[9];
         for (int i = 0; i < board.length; i++) {
             board[i] = '-';
